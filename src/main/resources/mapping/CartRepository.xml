@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.southwind.repository.CartRepository">
+
+    <insert id="save" parameterType="com.southwind.entity.Cart">
+        insert into easybuy_cart(productid,quantity,cost,userid) values(#{product.id},#{quantity},#{cost},#{user.id})
+    </insert>
+
+    <resultMap id="cartMap" type="com.southwind.entity.Cart">
+        <id property="id" column="cid"></id>
+        <result property="quantity" column="quantity"></result>
+        <result property="cost" column="cost"></result>
+        <association property="product" javaType="com.southwind.entity.Product">
+            <id property="id" column="pid"></id>
+            <result property="name" column="name"></result>
+            <result property="fileName" column="filename"></result>
+            <result property="price" column="price"></result>
+            <result property="stock" column="stock"></result>
+        </association>
+    </resultMap>
+
+    <select id="findAllByUserId" parameterType="java.lang.Integer" resultMap="cartMap">
+        select p.id pid,p.name,p.filename,p.price,p.stock,c.id cid,c.quantity,c.cost from easybuy_cart c,easybuy_product p where c.productid = p.id and c.userid = #{id}
+    </select>
+
+    <delete id="deleteById" parameterType="java.lang.Integer">
+        delete from easybuy_cart where id = #{id}
+    </delete>
+
+    <update id="update" parameterType="com.southwind.entity.Cart">
+        update easybuy_cart set quantity = #{quantity},cost = #{cost} where id = #{id}
+    </update>
+
+    <delete id="clearCartByUserId" parameterType="java.lang.Integer">
+        delete from easybuy_cart where userid = #{id}
+    </delete>
+
+</mapper>

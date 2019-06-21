@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.southwind.repository.OrderRepository">
+
+<!--    <insert id="addOrder" parameterType="com.southwind.entity.Order">-->
+<!--        <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER">-->
+<!--            SELECT LAST_INSERT_ID() AS id-->
+<!--        </selectKey>-->
+<!--        insert into easybuy_order(userId,userAddress,createTime,cost,serialNumber) values(#{userId},#{userAddress},#{createTime},#{cost},#{serialNumber})-->
+<!--    </insert>-->
+
+    <insert id="addOrder" useGeneratedKeys="true" keyProperty="id" parameterType="com.southwind.entity.Order">
+        insert into easybuy_order(userid,useraddress,createtime,cost,serialnumber) values(#{userId},#{userAddress},#{createTime},#{cost},#{serialNumber})
+    </insert>
+
+    <insert id="addOrderDetail" parameterType="com.southwind.entity.OrderDetail">
+        insert into easybuy_order_detail(orderid,productid,quantity,cost) values(#{order.id},#{product.id},#{quantity},#{cost})
+    </insert>
+
+    <select id="getOrderId" resultType="int">
+        select id from easybuy_order order by id desc limit 0,1
+    </select>
+
+    <resultMap id="orderDetailMap" type="com.southwind.entity.OrderDetail">
+        <id property="id" column="oid"></id>
+        <result property="quantity" column="quantity"></result>
+        <result property="cost" column="cost"></result>
+        <association property="product" javaType="com.southwind.entity.Product">
+            <id property="id" column="pid"></id>
+            <result property="name" column="name"></result>
+            <result property="fileName" column="filename"></result>
+            <result property="price" column="price"></result>
+        </association>
+    </resultMap>
+
+    <select id="findByOrderId" parameterType="java.lang.Integer" resultMap="orderDetailMap">
+        select p.id pid,p.filename fileName,p.name,p.price,od.quantity,od.cost,od.id oid from easybuy_order_detail od,easybuy_product p where od.productId = p.id and od.orderId = #{id}
+    </select>
+
+    <select id="findByUserId" parameterType="java.lang.Integer" resultType="com.southwind.entity.Order">
+        select o.id,o.serialnumber,o.useraddress,o.cost from easybuy_order o,easybuy_user u where o.userId = u.id and u.id = #{id}
+    </select>
+
+    <select id="findOrderDetailByOrderId" parameterType="java.lang.Integer" resultMap="orderDetailMap">
+        select od.id,p.name,p.filename,od.quantity,p.price,od.cost from easybuy_order o,easybuy_order_detail od,easybuy_product p
+where o.id = od.orderid and od.productid = p.id and o.id = #{id}
+    </select>
+
+</mapper>

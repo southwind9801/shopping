@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.southwind.repository.UserRepository">
+
+    <select id="login" resultType="com.southwind.entity.User">
+        select * from easybuy_user where loginname = #{arg0} and password = #{arg1}
+    </select>
+
+    <select id="findAllAddressByUserId" parameterType="java.lang.Integer" resultType="com.southwind.entity.UserAddress">
+        select * from easybuy_user_address where userid = #{id}
+    </select>
+
+    <insert id="register" parameterType="com.southwind.entity.User">
+        insert into easybuy_user(loginname,username,password,sex,identitycode,email,mobile) values(#{loginName},#{userName},#{password},#{sex},#{identityCode},#{email},#{mobile})
+    </insert>
+
+</mapper>
