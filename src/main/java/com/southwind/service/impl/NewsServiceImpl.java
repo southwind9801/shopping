@@ -14,14 +14,17 @@ public class NewsServiceImpl implements NewsService {
     @Autowired
     private NewsRepository newsRepository;
 
+    @Override
     public List<News> findForMain() {
         return newsRepository.findForMain();
     }
 
+    @Override
     public List<News> findByPage(int page,int limit) {
         return newsRepository.findLimit((page-1)*limit,limit);
     }
 
+    @Override
     public int getPages(int limit) {
         int total = newsRepository.count();
         int page = 0;

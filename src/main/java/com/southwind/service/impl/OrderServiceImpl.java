@@ -20,6 +20,7 @@ public class OrderServiceImpl implements OrderService {
     @Autowired
     private CartRepository cartRepository;
 
+    @Override
     public Order addOrder(int userId,String userAddress,int cost) {
         String seriaNumber = null;
         try {
@@ -53,10 +54,12 @@ public class OrderServiceImpl implements OrderService {
         return order;
     }
 
+    @Override
     public List<OrderDetail> findByOrderId(int orderId) {
         return orderRepository.findByOrderId(orderId);
     }
 
+    @Override
     public List<Order> findByUserId(int userId) {
         List<Order> list = orderRepository.findByUserId(userId);
         for(Order order:list){

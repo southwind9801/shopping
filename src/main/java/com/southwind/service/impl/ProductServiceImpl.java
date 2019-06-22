@@ -17,6 +17,7 @@ public class ProductServiceImpl implements ProductService {
     @Autowired
     private ProductRepository productRepository;
 
+    @Override
     public List<ProductCategory> findAllProductCategory() {
         List<ProductCategory> list1 = productCategoryRepository.findProductCategoryByLevel(new ProductCategory(1,0));
         for(ProductCategory productCategory:list1){
@@ -35,14 +36,17 @@ public class ProductServiceImpl implements ProductService {
         return list1;
     }
 
+    @Override
     public List<Product> findAllProductByLevel(ProductCategory productCategory) {
         return productCategoryRepository.findAllProductByLevel(productCategory);
     }
 
+    @Override
     public Product findById(int id) {
         return productRepository.findById(id);
     }
 
+    @Override
     public List<Product> findAllByKeyWord(String keyWord) {
         return productRepository.findAllByKeyWord(keyWord);
     }

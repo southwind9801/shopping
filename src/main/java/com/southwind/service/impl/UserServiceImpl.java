@@ -14,14 +14,17 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private UserRepository userRepository;
 
+    @Override
     public User login(String loginName, String passWord) {
         return userRepository.login(loginName, passWord);
     }
 
+    @Override
     public List<UserAddress> findAllAddressByUserId(int id) {
         return userRepository.findAllAddressByUserId(id);
     }
 
+    @Override
     public void register(User user) {
         userRepository.register(user);
     }
